@@ -1,20 +1,20 @@
 #!/bin/bash
 
 #replace with your own password or give it via command line
-password="password"
-if [[ "$1" -eq "" ]]
+if [[  -z "$1" ]]
 then
-	password=$1
+        password="password"
+else
+        password=$1
 fi
-
 cmd=$(echo $password | sudo -S lshw -C network -short 2>/dev/null | grep Wireless | awk '{print $2 " " $4}')
 if sudo -n true ; then
-	echo "I got the sudo password"
+        echo "I got the sudo password"
 else
-	echo "Wrong sudo password"
-	echo "Either replace the password in this script or give password via command line arguments"
-	echo "Exiting...."
-	exit 0
+        echo "Wrong sudo password"
+        echo "Either replace the password in this script or give password via command line arguments"
+        echo "Exiting...."
+        exit 0
 fi
 
 #the return value is a single string having a space
