@@ -20,8 +20,8 @@ fi
 #the return value is a single string having a space
 #splitting by space and storing in a array
 cmd=($cmd)
-echo "Wifi Interface "${cmd[0]}
-echo "Wifi Driver "${cmd[1]}
+echo "Wifi Interface: "${cmd[0]}
+echo "Wifi Driver: "${cmd[1]}
 if [ -d "rtlwifi_new" ]
 then
 	rm -rf rtlwifi_new
