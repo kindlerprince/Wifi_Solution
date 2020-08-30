@@ -1,5 +1,18 @@
 #!/bin/bash
 
+
+statuscheck()
+{
+	if [ $1 -ne 0 ]
+	then
+		echo $2
+		echo "Exiting...."
+		exit 0
+	fi
+}
+
+CURR=$(cd "$(dirname "$0")" ; pwd -P )
+echo $CURR
 echo -n "Enter the sudo password : "
 read -s password
 
@@ -19,23 +32,20 @@ cmd=($cmd)
 echo "Wifi Interface: "${cmd[0]}
 echo "Wifi Driver: "${cmd[1]}
 
-exit 0
 if [ -d "rtlwifi_new" ]
 then
 	rm -rf rtlwifi_new
 fi
 
-git clone https://github.com/kindlerprince/rtlwifi_new.git
+git clone https://github.com/kindlerprince/rtlwifi_new.git 
+statuscheck $? "Failed to cloned Repository"
 
-if [[ $? -ne 0 ]]; then
-	echo "Failed to cloned Repository"
-	echo "Exiting..."
-	exit 0
-fi
 
 cd rtlwifi_new
 make
+statuscheck $? "Error occured in make"
 sudo make install
+statuscheck $? "Error occured in make"
 sudo modprobe -rv ${cmd[1]}
 sudo modprobe -v ${cmd[1]} ant_sel=2
 sudo ip link set ${cmd[0]} up
@@ -43,3 +53,4 @@ sudo iw dev ${cmd[0]} scan
 make clean
 
 echo "Wifi Driver Installed Successfully"
+
